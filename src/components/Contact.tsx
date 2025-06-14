@@ -197,11 +197,14 @@ const Contact: React.FC = () => {
                 method="POST"
                 data-netlify="true"
                 data-netlify-honeypot="bot-field"
-                netlify
               >
                 {/* Hidden fields for Netlify */}
                 <input type="hidden" name="form-name" value="contact" />
-                <input type="hidden" name="bot-field" style={{ display: 'none' }} />
+                <div style={{ display: 'none' }}>
+                  <label>
+                    Don't fill this out if you're human: <input name="bot-field" />
+                  </label>
+                </div>
 
                 {/* Success/Error Messages */}
                 {submitStatus === 'success' && (
