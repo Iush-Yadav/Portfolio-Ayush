@@ -1,17 +1,30 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ayush - Portfolio</title>
+    <meta name="theme-color" content="#212121" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=iush" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=iush" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=iush" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=iush" />
+    <title>Ayush Yadav — Developer & Designer</title>
+    <meta name="description" content="Ayush Yadav is a Computer Science undergraduate at NIT Rourkela, Odisha, India, originally from Janakpurdham, Nepal. Available for remote collaboration worldwide. Explore his work in frontend development, distributed systems, and machine learning." />
+    <meta property="og:title" content="Ayush Yadav — Developer & CSE Undergraduate" />
+    <meta property="og:description" content="Explore StartupConnect, Online Cheat Detector, HyperCache, CareFlow, Saathi, and FitCheck: interfaces, systems, and data projects by Ayush Yadav." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://contact-ayush.netlify.app/" />
+    <meta property="og:image" content="https://contact-ayush.netlify.app/image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://contact-ayush.netlify.app/" />
   </head>
   <body>
+    <!-- Netlify detects this static form at build time; React submits the same field names. -->
+    <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input name="bot-field" /><input name="name" /><input name="email" type="email" /><input name="subject" /><textarea name="message"></textarea>
+    </form>
     <div id="root"></div>
+    <noscript>Please enable JavaScript to explore this portfolio. Contact Ayush Yadav at <a href="mailto:iushyadav27@gmail.com">iushyadav27@gmail.com</a>.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,109 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Contact from './components/Contact';
-import Navigation from './components/Navigation';
-import Particles from './components/Particles';
-import SplashCursor from './components/SplashCursor';
-
-function App() {
-  const [activeSection, setActiveSection] = useState('hero');
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['hero', 'about', 'skills', 'projects', 'contact'];
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetHeight = element.offsetHeight;
-          
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <div className="bg-black text-white min-h-screen relative overflow-x-hidden">
-      {/* Optimized Splash Cursor Effect */}
-      <SplashCursor
-        SIM_RESOLUTION={64} // Reduced for better performance
-        DYE_RESOLUTION={512} // Reduced for better performance
-        DENSITY_DISSIPATION={3.5}
-        VELOCITY_DISSIPATION={2}
-        PRESSURE={0.1}
-        PRESSURE_ITERATIONS={15} // Reduced iterations
-        CURL={2} // Reduced curl
-        SPLAT_RADIUS={0.15} // Reduced radius
-        SPLAT_FORCE={4000} // Reduced force
-        SHADING={false} // Disabled for performance
-        COLOR_UPDATE_SPEED={5} // Reduced update speed
-        TRANSPARENT={true}
-      />
-
-      {/* Optimized Particles Background */}
-      <div className="fixed inset-0 z-0">
-        <Particles
-          particleColors={['#3b82f6', '#8b5cf6', '#06b6d4', '#ffffff']}
-          particleCount={60} // Reduced count
-          particleSpread={15}
-          speed={0.02} // Reduced speed
-          particleBaseSize={40} // Reduced size
-          moveParticlesOnHover={false} // Disabled for performance
-          particleHoverFactor={0.2}
-          alphaParticles={true}
-          disableRotation={false}
-          sizeRandomness={0.4}
-          cameraDistance={25}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10">
-        <Navigation activeSection={activeSection} scrollToSection={scrollToSection} />
-        
-        <main>
-          <section id="hero">
-            <Hero />
-          </section>
-          
-          <section id="about">
-            <About />
-          </section>
-          
-          <section id="skills">
-            <Skills />
-          </section>
-          
-          <section id="projects">
-            <Projects />
-          </section>
-          
-          <section id="contact">
-            <Contact />
-          </section>
-        </main>
-      </div>
-    </div>
-  );
+import { useState } from 'react';
+import { ArrowUpRight, ArrowDown, Github, Mail, Pause, Play, ArrowUp } from 'lucide-react';
+import { profile, skills } from './data/portfolio';
+import { featuredProjects } from './data/selectedWork';
+import ContactForm from './components/experience/ContactForm';
+import ProfileLinks from './components/ProfileLinks';
+import { BorderArt, DeskSketch, Doodle, ProjectArt } from './components/Sketches';
+export default function App() {
+ const [paused,setPaused] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+ const [filter,setFilter] = useState('All work');
+ const categories = ['All work','Web & product','Systems & ML'];
+ const shown = featuredProjects.filter(p=>filter==='All work'||(filter==='Web & product'?['startupconnect','saathi','fitcheck'].includes(p.id):['cheatdetector','hypercache','careflow'].includes(p.id)));
+ return <div className={`sketchbook ${paused?'motion-paused':''}`} id="page-top">
+  <a className="skip-link" href="#main">Skip to content</a><BorderArt/>
+  <header className="sketch-nav"><a href="#page-top" className="little-logo" aria-label="Ayush home">iush<span>*</span></a><nav aria-label="Main navigation"><a href="#about">About</a><a href="#work">Work</a><a href="#contact">Connect</a></nav><button className="motion-button" onClick={()=>setPaused(!paused)} aria-pressed={paused} aria-label={paused?'Resume animations':'Pause animations'}>{paused?<Play size={15}/>:<Pause size={15}/>}</button></header>
+  <main id="main">
+   <section className="book-opening" aria-labelledby="hero-title">
+    <Doodle kind="cup" className="margin-doodle doodle-left"/><Doodle kind="spark" className="margin-doodle doodle-right"/>
+    <div className="notebook-cover"><div className="hero-page graph-paper"><div className="paper-corner corner-tl"><Doodle kind="leaf"/></div><div className="paper-corner corner-br"><Doodle kind="flower"/></div>
+     <div className="hero-copy"><p className="signature">Ayush<span> ☺</span></p><p className="hero-role">Developer & curious human</p><h1 id="hero-title">Thoughtful code.<br/>A little <span className="hand ink-circle">wonder.</span></h1><p className="hero-location">Available remotely, worldwide.<br/><span className="mono">OPEN TO INTERNSHIPS & COLLABORATIONS</span></p><a href="#work" className="hand hero-link">Take a look around <ArrowDown size={18}/></a><ProfileLinks label="Connect with Ayush"/></div>
+     <div className="hero-drawing"><DeskSketch/></div><span className="page-index mono">THE FIELD NOTES OF AYUSH YADAV / VOL. 01</span>
+    </div><div className="book-seam"/><div className="belief-page"><p className="small-serif">A few things I bring to what I build</p><div className="belief-notes"><div className="scrap ruled-paper"><span className="mono">01 / THE INTERFACE</span><p>Make the<br/>complex<br/><u>feel clear.</u></p></div><div className="scrap graph-paper"><span className="mono">02 / THE SYSTEM</span><p>Understand<br/>what’s under<br/>the hood.</p></div><div className="scrap plain-paper"><span className="mono">03 / THE PROCESS</span><p>Stay curious.<br/>Build. Learn.<br/><em>Make it better.</em></p></div></div><Doodle kind="leaf" className="belief-flower"/><p className="hand book-footnote">Interfaces, systems, and all the interesting bits between.</p></div></div>
+   </section>
+   <section id="work" className="work-section content-width"><div className="section-heading"><span className="eyebrow">01 / SELECTED WORK</span><h2>From a curious idea<br/>to <span className="hand">something real.</span></h2><p>Six projects across web, systems, and machine learning.<br/>The details, the decisions, and the code behind them.</p><Doodle kind="spark" className="heading-doodle"/></div>
+    <div className="work-filter" role="group" aria-label="Filter projects">{categories.map(c=><button key={c} aria-pressed={c===filter} onClick={()=>setFilter(c)}>{c}</button>)}</div><p className="sr-only" role="status">{shown.length} projects shown</p>
+    <div className="project-board">{shown.map(p=><article className={`project-card project-${p.id}`} key={p.id} id={p.id}><a className="project-picture" href={p.demo||p.github} target="_blank" rel="noopener noreferrer" aria-label={`Open ${p.name}${p.demo?' live site':' repository'}`}><span className="tape"/><span className="project-sticker hand">{p.pinned?'from my pins ↗':p.number+' / field notes'}</span><ProjectArt id={p.id}/><span className="picture-caption mono">{p.fact}<ArrowUpRight size={17}/></span></a><div className="project-info"><div className="project-category mono">{p.number} / {p.category}</div><h3>{p.name}</h3><p>{p.description}</p><ul className="tech-tags">{p.tech.map(t=><li key={t}>{t}</li>)}</ul><div className="project-links"><a href={p.github} target="_blank" rel="noopener noreferrer">View code <Github size={14}/></a>{p.demo&&<a href={p.demo} target="_blank" rel="noopener noreferrer">Live project <ArrowUpRight size={15}/></a>}</div><details><summary>Inside the project <span>+</span></summary><div className="project-notes"><p>{p.decision}</p><p>{p.boundary}</p><a href={p.source} target="_blank" rel="noopener noreferrer">Read implementation <ArrowUpRight size={13}/></a></div></details></div></article>)}</div>
+    <p className="art-note mono">Project covers are original illustrations of the ideas behind the code.</p><a className="hand all-work" href={profile.github} target="_blank" rel="noopener noreferrer">More experiments live on GitHub <ArrowUpRight size={23}/></a>
+   </section>
+   <section id="about" className="about-section content-width"><div className="about-label hand">And the person behind it all…<svg viewBox="0 0 100 60" aria-hidden="true"><path d="M5 10Q75 0 75 47M63 36L75 49L87 34" fill="none" stroke="currentColor" strokeWidth="2"/></svg></div><div className="about-page"><Doodle kind="leaf" className="about-corner"/><div className="portrait-polaroid"><span className="tape"/><img src="/image.png" width="1254" height="1254" alt="Ayush Yadav wearing a navy suit and white shirt" loading="lazy"/><p className="hand">Ayush Yadav. Hello there! <span>✳</span></p></div><div className="about-copy"><span className="eyebrow">02 / A LITTLE ABOUT ME</span><h2>More than<br/><span className="hand">a few repos.</span></h2><p>I’m Ayush, a Computer Science and Engineering undergraduate at <strong>NIT Rourkela, Odisha, India</strong>.</p><p>My journey began in <strong>Janakpurdham, Nepal—the land of Sita Mata</strong>. Today, I’m broadening my horizons through education in India and seeking opportunities to learn, collaborate, and build across borders.</p><p>I work across web development, UI/UX, and AI/ML. I’m interested in both sides of software: how it feels to use, and how it works underneath.</p><p>That curiosity takes me from profiles and conversations in StartupConnect to adaptive routing in HyperCache. I also value open-source collaboration and helping fellow students learn.</p><p className="hand about-signoff">Currently looking for an internship<br/>and good people to build with.</p><ProfileLinks label="Ayush’s profile links" phone/></div></div></section>
+   <section className="personal-quote content-width" aria-label="My approach"><span className="quote-star" aria-hidden="true">✳</span><blockquote>“Great code is invisible.<br/><span className="hand">Great design is unforgettable.</span>”</blockquote><p className="mono">A PRINCIPLE I BUILD BY.</p></section>
+   <section id="stack" className="toolkit content-width"><div className="section-heading"><span className="eyebrow">03 / THE TOOLBOX</span><h2>A few tools.<br/><span className="hand">A lot of possibilities.</span></h2></div><div className="toolbox-sheets">{skills.map((s,i)=><article className={`tool-sheet sheet-${i}`} key={s.name}><span className="paper-clip" aria-hidden="true"/><Doodle kind={i===0?'code':i===1?'eye':'flower'}/><span className="mono">0{i+1}</span><h3>{s.name}</h3><p>{s.description}</p><ul>{s.tools.map(t=><li key={t}>{t}</li>)}</ul></article>)}</div><p className="hand toolkit-note">Always learning. Always adding to the toolbox.</p></section>
+   <section id="contact" className="contact-section content-width"><Doodle kind="flower" className="contact-flower"/><div className="contact-intro"><span className="eyebrow">04 / LET’S CONNECT</span><h2>Something in mind?<br/><span className="hand">Let’s make it happen.</span></h2><p>An internship, a collaboration, or a thoughtful hello.<br/>I’d love to hear what you’re working on.</p><a className="email-link" href={`mailto:${profile.email}`}><Mail size={22} aria-hidden="true"/>{profile.email}<ArrowUpRight size={22}/></a><ProfileLinks label="Contact and social links" phone/></div><div className="letter-paper"><span className="postage-stamp"><Doodle kind="spark"/><span className="mono">SAY HELLO</span></span><p className="hand letter-title">A note for Ayush,</p><ContactForm/><span className="letter-end hand">good things start with a conversation.</span></div></section>
+  </main><footer className="sketch-footer content-width"><a href="#page-top" className="signature" aria-label="Back to top">Ayush <span>✳</span></a><p className="mono">MADE WITH CARE & CURIOSITY.<br/>© {new Date().getFullYear()} AYUSH YADAV · AVAILABLE WORLDWIDE</p><a href="#page-top" className="hand">Back to the top <ArrowUp size={18}/></a></footer>
+ </div>;
 }
-
-export default App;
